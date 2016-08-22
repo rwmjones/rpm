@@ -15,6 +15,8 @@
 
 /* Version 2013-06-24.  */
 
+#include "system.h"
+
 #define _GNU_SOURCE
 #include <string.h>
 #include <fcntl.h>

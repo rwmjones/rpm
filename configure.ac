@@ -226,6 +226,8 @@ AC_SEARCH_LIBS(dlopen, [dl])
 
 #=================
 # Check for libelf library. Prefer external, otherwise none.
+old_LIBS="$LIBS"
+LIBS="-lz"
 WITH_LIBELF_LIB=
 AC_CHECK_HEADER([libelf.h])
 AC_CHECK_HEADERS([gelf.h], [
@@ -237,6 +239,7 @@ AC_CHECK_HEADERS([gelf.h], [
 ])
 AC_SUBST(WITH_LIBELF_LIB)
 AM_CONDITIONAL(LIBELF,[test "$WITH_LIBELF" = yes])
+LIBS="$old_LIBS"
 
 AC_CHECK_HEADERS([dwarf.h], [
   WITH_LIBDWARF=yes
@@ -309,6 +312,8 @@ AC_SUBST(WITH_NSS_LIB)
 WITH_MAGIC_INCLUDE=
 WITH_MAGIC_LIB=
 
+old_LIBS="$LIBS"
+LIBS="-lz"
 AC_CHECK_HEADER([magic.h], [
     AC_CHECK_LIB(magic, magic_open, [
       WITH_MAGIC_INCLUDE=
@@ -319,6 +324,7 @@ AC_CHECK_HEADER([magic.h], [
 ],[
       AC_MSG_ERROR([missing required header magic.h]) 
 ])
+LIBS="$old_LIBS"
 
 AC_SUBST(WITH_MAGIC_INCLUDE)
 AC_SUBST(WITH_MAGIC_LIB)
@@ -369,6 +375,8 @@ AM_CONDITIONAL(WITH_ARCHIVE,[test "$with_archive" = yes])
 
 #=================
 # Check for elfutils libdw library with dwelf_elf_gnu_build_id.
+old_LIBS="$LIBS"
+LIBS="-lz -llzma -lelf"
 AS_IF([test "$WITH_LIBELF" = yes],[
   AC_CHECK_HEADERS([elfutils/libdwelf.h],[
     AC_CHECK_LIB(dw, dwelf_elf_gnu_build_id, [
@@ -381,6 +389,7 @@ AS_IF([test "$WITH_LIBELF" = yes],[
   AC_SUBST(WITH_LIBDW_LIB)
   AM_CONDITIONAL(LIBDW,[test "$WITH_LIBDW" = yes])
 ])
+LIBS="$old_LIBS"
 
 #=================
 # Process --with/without-external-db
